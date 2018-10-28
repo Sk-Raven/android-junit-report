@@ -29,7 +29,27 @@
             <src path="${source.dir}"/>
         </javac>
     </target>
+        <target name="junitTest" depends="run">
+    <junit printsummary="on" fork="true" showoutput="true">
+<classpath>
+<fileset dir="${lib.dir}" includes="**/*.jar" />
+<pathelement path="$S{dest}" />
+</classpath>
+<formatter type="xml" />
+<batchtest todir="${report folder}">
+ <fileset dir="${dest}">
+     <include name="**/*Test*.*"></include>
+ </fileset>   
     
+</batchtest>
+    </junit>
+        <junitreport todir="${report folder}">
+            <fileset dir="${report folder}">
+                <include name="TEST-*.xml"></include>
+            </fileset>
+            <report format="frames" todir="${report folder}"/>
+        </junitreport>
+        </target>
     <target name="jar" depends="compile">
         <jar destfile="${jar}" basedir="${classes.dir}">
             <manifest>
